@@ -1,55 +1,67 @@
 function main() {
-  for (var row of DATA.slice(1)) {
-    createEntry(row)
-    modifyEntry(row)
+  var rowIndex = 2
+  for (var rowData of DATA.slice(1)) {
+    createEntry(rowData, rowIndex)
+    modifyEntry(rowData)
+    rowIndex += 1
   }
 }
 
 
-function createEntry(row) {
+function createEntry(data, rowIndex) {
   // If calendar link is empty, create a new calendar entry
   // Write to last modified and calendar link
-  if (row[EVENT_LINK] == "") {
+  if (data[EVENT_LINK] == "") {
     console.log("Making an entry")
     // Prep Date
-    const startDate = new Date(row[START_DATE]);
-    const endDate = new Date(row[END_DATE]);
-    const startTime = row[START_TIME];
-    const endTime = row[END_TIME];
-
-    console.log(startDate)
-    console.log(endDate)
-    console.log(startTime)
-    console.log(endTime)
-
+    const startDate = new Date(data[START_DATE]);
+    const endDate = new Date(data[END_DATE]);
+    const startTime = data[START_TIME];
+    const endTime = data[END_TIME];
 
     startDate.setHours(startTime.getHours(), startTime.getMinutes());
     endDate.setHours(endTime.getHours(), endTime.getMinutes());
 
-    console.log(startDate)
-    console.log(endDate)
+    const event = CALENDAR.createEvent(
+      data[EVENT_NAME],
+      startDate,
+      endDate,
+      );
+    const eventId = event.getId();
+    const eventURL = `https://calendar.google.com/calendar/event?eid=${eventId}`;
 
-    const event = CALENDAR.createEvent({
-      title: row[EVENT_NAME],
-      start: startDate,
-      end: endDate,
-      });
+    ACTIVE_PAGE.getRange(rowIndex, EVENT_LINK+1).setValue(eventURL)
+    updateTimestamps(rowIndex)
+
+
   }
 }
 
-function modifyEntry(row) {
+function modifyEntry(data) {
   // If last modified does not match modified
   // Use the calendar link to retreive and edit event
-  if (row[TIMESTAMP] !== row[MODIFIED]) {
+  if (data[TIMESTAMP].getTime() !== data[MODIFIED].getTime()) {
     console.log("Modify")
   } 
 }
 
-//
-function createCalendarEntry(row){
+function updateEvent(eventUrl){
+  const eventId = getEventIdFromUrl(eventUrl);
+  // What to do if event not found?
+  const event = CALENDAR.getEventById(eventId);
 
+};
+
+function getEventIdFromUrl(url) {
+  const match = url.match(/eid=([^&]+)/);
+  return match ? match[1] : null;
 }
 
-function modifyCalendarEntry(row){
-  
+
+function updateTimestamps(rowIndex){
+  var currentDate = new Date();
+  var formattedDate = Utilities.formatDate(currentDate, 'GMT', 'MM/dd/yyyy HH:mm:ss');
+  ACTIVE_PAGE.getRange(rowIndex, MODIFIED+1).setValue(formattedDate)
+  ACTIVE_PAGE.getRange(rowIndex, TIMESTAMP+1).setValue(formattedDate)
 }
+
