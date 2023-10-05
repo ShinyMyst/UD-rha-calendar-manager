@@ -3,9 +3,9 @@
 // ###################
 // You may tweak the values here if questions or Spreadsheet changes
 
-const spreadsheetId = "1WA3hyaWy-PqwjDchFnd7wRAKnVbRhwHrBSLey8fItP0"
+const spreadsheetId = "1WA3hyaWRAKnVbRhwHrBSLey8fItP0"
 const pageName = "Form Responses 1"
-const calendarId = "c_a9ecb61fd391901406217a1abf70f4d439d1feead01b9f6b15cf6a08dd401d3f@group.calendar.google.com"
+const calendarId = "c_a9ecb61fd391901406217a1abfead01b9f6b15cf6a08dd401d3f@group.calendar.google.com"
 
 // Copy and paste the question that provides the associated information
 const startDate = "What date will you be picking up the DBC from Kiefaber 461?"
@@ -24,9 +24,9 @@ const eventLink = "Calendar Link"
 // Get Data & Calendar
 // ###################
 const activeSheet = SpreadsheetApp.openById(spreadsheetId);
-const activePage = activeSheet.getSheetByName(pageName);
+const ACTIVE_PAGE = activeSheet.getSheetByName(pageName);
 
-const DATA = activePage.getDataRange().getValues();
+const DATA = ACTIVE_PAGE.getDataRange().getValues();
 const CALENDAR = CalendarApp.getCalendarById(calendarId)
 
 // ###################
@@ -52,7 +52,7 @@ const EVENT_LINK = index_map[eventLink];
 // Functions
 // ###################
 function createHeaderToIndexMap() {
-  var headers = activePage.getRange(1, 1, 1, activePage.getLastColumn()).getValues()[0];
+  var headers = ACTIVE_PAGE.getRange(1, 1, 1, ACTIVE_PAGE.getLastColumn()).getValues()[0];
   var headerToIndex = {};
 
   for (var i = 0; i < headers.length; i++) {
