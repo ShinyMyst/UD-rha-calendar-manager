@@ -1,67 +1,89 @@
 function main() {
   var rowIndex = 2
   for (var rowData of DATA.slice(1)) {
-    createEntry(rowData, rowIndex)
-    modifyEntry(rowData)
+    processNewEntry(rowData, rowIndex)
+    processModifiedEntry(rowData, rowIndex)
     rowIndex += 1
   }
 }
 
-
-function createEntry(data, rowIndex) {
+// ###################
+// Primary Functions
+// ###################
+function processNewEntry(data, rowIndex) {
   // If calendar link is empty, create a new calendar entry
-  // Write to last modified and calendar link
+  // Updates timestamp, last modified, and event link columns
   if (data[EVENT_LINK] == "") {
-    console.log("Making an entry")
-    // Prep Date
-    const startDate = new Date(data[START_DATE]);
-    const endDate = new Date(data[END_DATE]);
-    const startTime = data[START_TIME];
-    const endTime = data[END_TIME];
-
-    startDate.setHours(startTime.getHours(), startTime.getMinutes());
-    endDate.setHours(endTime.getHours(), endTime.getMinutes());
-
-    const event = CALENDAR.createEvent(
-      data[EVENT_NAME],
-      startDate,
-      endDate,
-      );
-    const eventId = event.getId();
-    const eventURL = `https://calendar.google.com/calendar/event?eid=${eventId}`;
-
-    ACTIVE_PAGE.getRange(rowIndex, EVENT_LINK+1).setValue(eventURL)
-    updateTimestamps(rowIndex)
-
-
+    console.log("Adding new event to calendar.")
+    // Create event in calendar
+    const [eventStart, eventEnd] = getTimeframe(data)
+    const event = CALENDAR.createEvent(data[EVENT_NAME], eventStart, eventEnd);
+    addEventData(event)
+    // Update spreadsheet
+    writeTimestamps(ACTIVE_PAGE, rowIndex, TIMESTAMP+1, MODIFIED+1, );
+    writeEventLink(event, ACTIVE_PAGE, rowIndex, EVENT_LINK+1);
   }
-}
-
-function modifyEntry(data) {
-  // If last modified does not match modified
-  // Use the calendar link to retreive and edit event
-  if (data[TIMESTAMP].getTime() !== data[MODIFIED].getTime()) {
-    console.log("Modify")
-  } 
-}
-
-function updateEvent(eventUrl){
-  const eventId = getEventIdFromUrl(eventUrl);
-  // What to do if event not found?
-  const event = CALENDAR.getEventById(eventId);
-
 };
 
-function getEventIdFromUrl(url) {
-  const match = url.match(/eid=([^&]+)/);
-  return match ? match[1] : null;
+function processModifiedEntry(data, rowIndex) {
+  // If timestamp does does not match last modified
+  // Use the calendar link to retreive and edit event
+  if (data[MODIFIED] && data[TIMESTAMP].getTime() !== data[MODIFIED].getTime()) { 
+    modifyEventData(data[EVENT_LINK], data)
+    writeTimestamps(ACTIVE_PAGE, rowIndex, TIMESTAMP+1, MODIFIED+1, );
+  }
+};
+
+// ###################
+// Data Retrieval 
+// ###################
+function getTimeframe(data) {
+    // Find start and end date/time
+
+    // Event Start
+    const startDate = new Date(data[START_DATE]);
+    const startTime = data[START_TIME];
+    startDate.setHours(startTime.getHours(), startTime.getMinutes()-32);
+
+    // Event End
+    const endDate = new Date(data[END_DATE]);
+    const endTime = data[END_TIME];
+    endDate.setHours(endTime.getHours(), endTime.getMinutes()-32);
+
+    return [startDate, endDate]
 }
 
+// TODO - Remove global references from the lower level functions.
+// ###################
+// Adjust Calendar Entries
+// ###################
+function modifyEventData(eventUrl, data){
+  // Given an event object, update the calendar entry with info from data.
+  const eventId = eventUrl.match(/eid=([^&]+)/)[1];
+  const event = CALENDAR.getEventById(eventId);
+  event.setTitle(data[EVENT_NAME])
+  event.setTime(...getTimeframe(data))
+  addEventData(event)
+};
 
-function updateTimestamps(rowIndex){
+function addEventData(event){
+  // Given an event object, update all event data sans title and time.
+}
+
+// ###################
+// Write to Spreadsheet
+// ###################
+function writeTimestamps(page, rowIndex, timestampIndex, modifiedIndex){
+  // Updates the Timestamp and Last Modified columns to current date.
   var currentDate = new Date();
   var formattedDate = Utilities.formatDate(currentDate, 'GMT', 'MM/dd/yyyy HH:mm:ss');
-  ACTIVE_PAGE.getRange(rowIndex, MODIFIED+1).setValue(formattedDate)
-  ACTIVE_PAGE.getRange(rowIndex, TIMESTAMP+1).setValue(formattedDate)
+  page.getRange(rowIndex, timestampIndex).setValue(formattedDate)
+  page.getRange(rowIndex, modifiedIndex).setValue(formattedDate)
+}
+
+function writeEventLink(event, page, rowIndex, columnIndex){
+  // Updates the event URL column to given event's URL
+  var eventURL = `https://calendar.google.com/calendar/event?eid=${event.getId()}`;
+  page.getRange(rowIndex, columnIndex).setValue(eventURL)
 }
 
