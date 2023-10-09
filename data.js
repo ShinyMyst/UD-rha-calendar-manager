@@ -3,21 +3,19 @@
 // ###################
 // You may tweak the values here if questions or Spreadsheet changes
 
-const spreadsheetId = "1WA3hyaWRAKnVbRhwHrBSLey8fItP0"
-const pageName = "Form Responses 1"
-const calendarId = "c_a9ecb61fd391901406217a1abfead01b9f6b15cf6a08dd401d3f@group.calendar.google.com"
+const spreadsheetId = "1WA3hyaWy-"
+const pageName = "Form Responses 2"
+const calendarId = "@group.calendar.google.com"
 
 // Copy and paste the question that provides the associated information
-const startDate = "What date will you be picking up the DBC from Kiefaber 461?"
-const startTime = "What time will you be picking up the DBC from Kiefaber 461?"
-const endDate = "What date do you expect to return the DBC to Kiefaber 461?"
-const endTime = "What time do you expect to return the DBC to Kiefaber 461?"
 const eventName = "Name of event"
 const purchaser = "Your Name"
 const area = "Name of Area Council offering this submission"
 const timestamp = "Timestamp"
 const modified = "Last Modified"
 const eventLink = "Calendar Link"
+const eventStart = "What date and time will you be picking up the DBC from Kiefaber 461?"
+const eventEnd = "What date and time do you expect to return the DBC to Kiefaber 461?"
 
 
 // ###################
@@ -37,16 +35,14 @@ const CALENDAR = CalendarApp.getCalendarById(calendarId)
 // This is done to seperate the value that general users can tweak.
 const index_map = createHeaderToIndexMap()
 
-const START_DATE = index_map[startDate];
-const START_TIME = index_map[startTime];
-const END_DATE = index_map[endDate];
-const END_TIME = index_map[endTime];
 const EVENT_NAME = index_map[eventName];
 const PURCHASER = index_map[purchaser];
 const AREA = index_map[area];
 const TIMESTAMP = index_map[timestamp];
 const MODIFIED = index_map[modified];
 const EVENT_LINK = index_map[eventLink];
+const EVENT_START = index_map[eventStart];
+const EVENT_END = index_map[eventEnd];
 
 // ###################
 // Functions
