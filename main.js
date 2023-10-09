@@ -40,15 +40,8 @@ function processModifiedEntry(data, rowIndex) {
 function getTimeframe(data) {
     // Find start and end date/time
 
-    // Event Start
-    const startDate = new Date(data[START_DATE]);
-    const startTime = data[START_TIME];
-    startDate.setHours(startTime.getHours(), startTime.getMinutes()-32);
-
-    // Event End
-    const endDate = new Date(data[END_DATE]);
-    const endTime = data[END_TIME];
-    endDate.setHours(endTime.getHours(), endTime.getMinutes()-32);
+    const startDate = new Date(data[EVENT_START]);
+    const endDate = new Date(data[EVENT_END]);
 
     return [startDate, endDate]
 }
