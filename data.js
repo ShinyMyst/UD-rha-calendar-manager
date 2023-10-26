@@ -3,9 +3,9 @@
 // ###################
 // You may tweak the values here if questions or Spreadsheet changes
 
-const spreadsheetId = "1WA3hyaWy-"
+const spreadsheetId = "1WA3hyaWy-j
 const pageName = "Form Responses 2"
-const calendarId = "@group.calendar.google.com"
+const calendarId = "j"
 
 // Copy and paste the question that provides the associated information
 const eventName = "Name of event"
