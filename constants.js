@@ -1,22 +1,26 @@
 // Sheet and Calendar Information
-const spreadsheetId = "k-k"
-const PAGE = "Form Responses 2"
-const calendarId = "k@group.calendar.google.com"
+const spreadsheetId = "x-x"
+const sheetName = "Form Responses 2"
+const calendarId = "x@group.calendar.google.com"
 
-// Required Fields 
-const eventName = "Name of event"
-const purchaser = "Your Name"
-const area = "Name of Area Council offering this submission"
-const formTimestamp = "Timestamp"
-const scriptTimestamp = "Script Timestamp"
-const eventLink = "Calendar Link"
-const eventStart = "What date and time will you be picking up the DBC from Kiefaber 461?"
-const eventEnd = "What date and time do you expect to return the DBC to Kiefaber 461?"
-
-
+// Required Header Information
 const header = {
-    eventLink: "TEXT HERE"
+    eventLink: "Calendar Link",
+    cardUser: "Your First and Last Name",
+    eventName: "Name of event",
+    eventDate: "Date and start time of the event",
+    hallCouncil: "Name of Area Council offering this submission",
+    purchaseStart: "What date and time will you be picking up the DBC from Kiefaber 461?",
+    purchaseEnd: "What date and time do you expect to return the DBC to Kiefaber 461?",
+    purchaseLocation: "What store are your purchasing from?",
+    formTimestamp: "Timestamp",
+    scriptTimestamp: "Script Timestamp"
 };
 
-// Set a header global here
-// Get all required headerse from other pages.
+// Retrieve Data
+const activeSheet = SpreadsheetApp.openById(spreadsheetId);
+const PAGE = activeSheet.getSheetByName(sheetName);
+
+const rawData = PAGE.getDataRange().getValues();
+const TOP_ROW = rawData[0]; 
+const DATA = rawData.slice(1);

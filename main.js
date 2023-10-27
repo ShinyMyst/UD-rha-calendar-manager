@@ -1,25 +1,24 @@
 function main() {
-  const {HEADERS, data} = pullData(spreadsheetId, pageName);
   let rowIndex = 0;
 
-  for (const entry of data){
+  for (const entry of DATA){
     rowIndex++; 
     // Evaluate New Entries
     if (isNewEntry(entry)){
-      createCalendarEntry();
-      writeTimestamps();
-      writeEventLink();
+      const event = createCalendarEntry();
+      writeTimestamps(rowIndex);
+      writeEventLink(rowIndex, event);
     }
     // Edit Modified Entries
     if (isModifiedEntry(entry)){
-      modifyCalendarEntry();
-      writeTimestamps();
+      modifyCalendarEntry(rowIndex);
+      writeTimestamps(rowIndex);
     }
   } 
 };
   
 
-// Loop Helper Functions
+// Loop Validation
 function isNewEntry(entry){
     return getCellData(entry, header.EventLink) == ""
 };
