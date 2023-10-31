@@ -1,7 +1,7 @@
 // Sheet and Calendar Information
-const spreadsheetId = "x-x"
+const spreadsheetId = "1WA3hyaWy-PqwjDchFnd7wRAKnVbRhwHrBSLey8fItP0"
 const sheetName = "Form Responses 2"
-const calendarId = "x@group.calendar.google.com"
+const calendarId = "c_a9ecb61fd391901406217a1abf70f4d439d1feead01b9f6b15cf6a08dd401d3f@group.calendar.google.com"
 
 // Required Header Information
 const header = {
@@ -18,6 +18,7 @@ const header = {
 };
 
 // Retrieve Data
+const CALENDAR = CalendarApp.getCalendarById(calendarId);
 const activeSheet = SpreadsheetApp.openById(spreadsheetId);
 const PAGE = activeSheet.getSheetByName(sheetName);
 

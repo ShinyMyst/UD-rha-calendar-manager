@@ -16,12 +16,10 @@ function generateEventDescription(entry){
     const cardUser = getCellData(entry, header.cardUser)
     const eventName = getCellData(entry, header.eventName)
     const eventDate = getCellData(entry, header.eventDate)
-    const description = `
-    <b>Information for the Receipt of Purchase</b>
-    <b>Card User:</b> ${cardUser}
-    <b>Event:</b> ${eventName}
-    <b>Event Date:</b> ${eventDate}
-    `;
+    const description = `<u><b>Information for the Receipt of Purchase</b></u>
+<b>Card User:</b> ${cardUser}
+<b>Event:</b> ${eventName}
+<b>Event Date:</b> ${eventDate}`;
     return description
 };
 
