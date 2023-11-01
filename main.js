@@ -30,3 +30,5 @@ function isModifiedEntry(entry){
     const scriptTimestamp = getCellData(entry, header.scriptTimestamp)
     return formTimestamp.getTime() !== scriptTimestamp.getTime();
 };
+
+//TODO - Event link is actually now Event ID.  References to this need corrected.
