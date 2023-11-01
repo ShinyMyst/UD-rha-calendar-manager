@@ -1,17 +1,19 @@
 function main() {
-  let rowIndex = 0;
+  let rowIndex = 1;
 
   for (const entry of DATA){
     rowIndex++; 
     // Evaluate New Entries
     if (isNewEntry(entry)){
-      const event = createCalendarEntry();
+      console.log("NEW")
+      const event = createCalendarEntry(entry);
       writeTimestamps(rowIndex);
       writeEventLink(rowIndex, event);
     }
     // Edit Modified Entries
     if (isModifiedEntry(entry)){
-      modifyCalendarEntry(rowIndex);
+      console.log("MOD")
+      modifyCalendarEntry(entry);
       writeTimestamps(rowIndex);
     }
   } 
@@ -20,11 +22,11 @@ function main() {
 
 // Loop Validation
 function isNewEntry(entry){
-    return getCellData(entry, header.EventLink) == ""
+    return getCellData(entry, header.eventLink) == ""
 };
 
 function isModifiedEntry(entry){
     const formTimestamp =  getCellData(entry, header.formTimestamp)
     const scriptTimestamp = getCellData(entry, header.scriptTimestamp)
-    return (scriptTimestamp && formTimestamp !== scriptTimestamp)
+    return formTimestamp.getTime() !== scriptTimestamp.getTime();
 };
