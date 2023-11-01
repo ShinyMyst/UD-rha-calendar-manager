@@ -1,34 +1,23 @@
-function main() {
-  let rowIndex = 1;
+/*
+function pullData(spreadsheetId, pageName) {
+  // Splits headers from data and returns both. 
+  const activeSheet = SpreadsheetApp.openById(spreadsheetId);
+  const activePage = activeSheet.getSheetByName(pageName);
+  const rawData = activePage.getDataRange().getValues();
+  const headers = rawData[0]; 
+  const splicedData = rawData.slice(1);
+  return {headers, splicedData};
+}; 
+*/
 
-  for (const entry of DATA){
-    rowIndex++; 
-    // Evaluate New Entries
-    console.log("NEW?")
-    if (isNewEntry(entry)){
-      console.log("YES NEW")
-      const event = createCalendarEntry(entry);
-      writeTimestamps(rowIndex);
-      writeEventLink(rowIndex, event);
-    }
-    // Edit Modified Entries
-    console.log("MODIFIED?")
-    if (isModifiedEntry(entry)){
-      console.log("YES MOD")
-      modifyCalendarEntry(rowIndex);
-      writeTimestamps(rowIndex);
-    }
-  } 
-};
+function getColumn(headerString){
+  // Finds the column number of a given header
+  // Column A is 1 but index is 0, so add 1
+    return TOP_ROW.indexOf(headerString)+1
+  };
   
-
-// Loop Validation
-function isNewEntry(entry){
-    return getCellData(entry, header.eventLink) == ""
-};
-
-function isModifiedEntry(entry){
-    const formTimestamp =  getCellData(entry, header.formTimestamp)
-    const scriptTimestamp = getCellData(entry, header.scriptTimestamp)
-    return (scriptTimestamp && formTimestamp !== scriptTimestamp)
+function getCellData(entry, headerString){
+  // Finds the data associated with the given header for given entry (row)
+      const cellIndex = TOP_ROW.indexOf(headerString);
+      return entry[cellIndex]
 };
