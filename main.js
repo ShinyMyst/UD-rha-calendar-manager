@@ -1,12 +1,32 @@
-function writeTimestamps(rowIndex){
-  // Updates the Timestamp and Last Modified columns to current date.
-  const currentDate = new Date();
-  const formattedDate = Utilities.formatDate(currentDate, 'GMT', 'MM/dd/yyyy HH:mm:ss');
-  PAGE.getRange(rowIndex, getColumn(header.formTimestamp)).setValue(formattedDate);
-  PAGE.getRange(rowIndex, getColumn(header.scriptTimestamp)).setValue(formattedDate);
+function main() {
+  let rowIndex = 1;
+
+  for (const entry of DATA){
+    rowIndex++; 
+    // Evaluate New Entries
+    if (isNewEntry(entry)){
+      const event = createCalendarEntry(entry);
+      writeTimestamps(rowIndex);
+      writeEventLink(rowIndex, event);
+    }
+    // Edit Modified Entries
+    if (isModifiedEntry(entry)){
+      modifyCalendarEntry(entry);
+      writeTimestamps(rowIndex);
+    }
+  } 
+};
+  
+
+// Loop Validation
+function isNewEntry(entry){
+    return getCellData(entry, header.eventLink) == ""
 };
 
-function writeEventLink(rowIndex, event){
-  // Updates the event URL column to given an event entity
-  PAGE.getRange(rowIndex, getColumn(header.eventLink)).setValue(event.getId());
+function isModifiedEntry(entry){
+    const formTimestamp =  getCellData(entry, header.formTimestamp)
+    const scriptTimestamp = getCellData(entry, header.scriptTimestamp)
+    return formTimestamp.getTime() !== scriptTimestamp.getTime();
 };
+
+//TODO - Event link is actually now Event ID.  References to this need corrected.
