@@ -1,7 +1,9 @@
 // Sheet and Calendar Information
-const spreadsheetId = "1WA3hyaWy-PqwjDchFnd7wRAKnVbRhwHrBSLey8fItP0"
+const spreadsheetId = "g-g"
 const sheetName = "Form Responses 2"
-const calendarId = "c_a9ecb61fd391901406217a1abf70f4d439d1feead01b9f6b15cf6a08dd401d3f@group.calendar.google.com"
+const calendarId = "g@group.calendar.google.com"
+// const CAL_ID = "g@group.calendar.google.com"
+
 
 // Required Header Information
 const header = {

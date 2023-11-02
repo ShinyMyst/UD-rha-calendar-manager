@@ -5,10 +5,11 @@ function createCalendarEntry(entry){
 };
 
 function modifyCalendarEntry(entry){
-  const eventUrl = getCellData(entry, header.eventLink);
-  const eventId = eventUrl.match(/eid=([^&]+)/)[1];
+  //const eventUrl = getCellData(entry, header.eventLink);
+  //const eventId = eventUrl.match(/eid=([^&]+)/)[1];
+  const eventId = getCellData(entry, header.eventLink)
   const calendarEvent = CALENDAR.getEventById(eventId);
-  setEventDetails(calendarEvent);
+  setEventDetails(entry, calendarEvent);
 };
 
 function generateEventDescription(entry){
